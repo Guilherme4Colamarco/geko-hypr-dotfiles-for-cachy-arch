@@ -1,0 +1,10 @@
+{
+    "workbench.colorTheme": "Gruvbox Dark Hard",
+    "editor.fontFamily": "'Iosevka Nerd Font Mono', 'monospace', monospace",
+    "editor.fontSize": 16,
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "window.menuBarVisibility": "compact",
+    "workbench.statusBar.visible": false,
+    "editor.minimap.enabled": false,
+    "git.confirmSync": false
+}

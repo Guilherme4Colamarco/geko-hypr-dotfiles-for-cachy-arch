@@ -1,0 +1,172 @@
+// Gruvbox Orange-Toned Dark Theme for RMPC (RON configuration format)
+
+// Gruvbox Dark Palette (with emphasis on orange):
+// bg0:      #282828 (main background)
+// bg1:      #3c3836 (softer background)
+// bg_sel:   #504945 (selection background)
+// fg0:      #ebdbb2 (primary foreground)
+// gray:     #a89984 (muted text/borders)
+// red:      #cc241d
+// green:    #98971a (still good for progress/status, but less prominent)
+// yellow:   #d79921
+// blue:     #458588
+// purple:   #b16286
+// aqua:     #689d6a
+// orange:   #d65d0e (main accent color)
+// orange_bright: #fe8019 (a brighter orange for stronger accents)
+
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    default_album_art_path: None,
+    show_song_table_header: true,
+    draw_borders: true,
+    format_tag_separator: " | ",
+    browser_column_widths: [20, 38, 42],
+
+    // --- Core Gruvbox Colors ---
+    background_color: "#282828",
+    text_color: "#ebdbb2",
+    header_background_color: "#3c3836",
+    modal_background_color: None,
+    modal_backdrop: false,
+
+    // --- UI Element Styling ---
+    preview_label_style: (fg: "#d65d0e"), // Orange
+    preview_metadata_group_style: (fg: "#d65d0e", modifiers: "Bold"), // Orange
+    tab_bar: (
+        enabled: true,
+        active_style: (fg: "#282828", bg: "#d65d0e", modifiers: "Bold"), // Orange background for active tab
+        inactive_style: (fg: "#a89984"), // Gray for inactive tabs
+    ),
+    highlighted_item_style: (bg: "#3c3836", modifiers: "Bold"), // Highlight with softer background
+    current_item_style: (fg: "#fe8019", bg: "#504945", modifiers: "Bold"), // Brighter Orange on selection bg for playing song
+    borders_style: (fg: "#504945"), // Subtle borders
+    highlight_border_style: (fg: "#d65d0e"), // Orange for active window border
+
+    // --- Symbols and Levels ---
+    symbols: (
+        song: "",
+        dir: "",
+        playlist: "",
+        marker: "",
+        ellipsis: "...",
+        song_style: None,
+        dir_style: None,
+        playlist_style: None,
+    ),
+    level_styles: (
+        info: (fg: "#458588", bg: "#282828"),    // Blue (kept for contrast for info)
+        warn: (fg: "#d79921", bg: "#282828"),    // Yellow (kept for warning distinction)
+        error: (fg: "#cc241d", bg: "#282828"),   // Red (kept for errors)
+        debug: (fg: "#98971a", bg: "#282828"),   // Green (for debug, providing variety)
+        trace: (fg: "#b16286", bg: "#282828"),   // Purple (for trace, providing variety)
+    ),
+
+    // --- Progress and Scroll Bars ---
+    progress_bar: (
+        symbols: ["[", "─", "─", " ", "]"],
+        track_style: (fg: "#3c3836"),
+        elapsed_style: (fg: "#d65d0e"), // Orange for progress
+        thumb_style: (fg: "#fe8019"),    // Brighter Orange for the thumb
+    ),
+    scrollbar: (
+        symbols: ["│", "█", "▲", "▼"],
+        track_style: (),
+        ends_style: (),
+        thumb_style: (fg: "#a89984"), // Gray for scrollbar thumb
+    ),
+
+    // --- Table and Layout (with one style fix) ---
+    song_table_format: [
+        (
+            prop: (kind: Property(Artist), default: (kind: Text("Unknown"))),
+            width: "20%",
+        ),
+        (
+            prop: (kind: Property(Title), default: (kind: Text("Unknown"))),
+            width: "35%",
+        ),
+        (
+            prop: (kind: Property(Album), style: (fg: "#a89984"), default: (kind: Text("Unknown Album"), style: (fg: "#a89984"))),
+            width: "30%",
+        ),
+        (
+            prop: (kind: Property(Duration), default: (kind: Text("-"))),
+            width: "15%",
+            alignment: Right,
+        ),
+    ],
+    components: {},
+    layout: Split(
+        direction: Vertical,
+        panes: [
+            (pane: Pane(Header), size: "2"),
+            (pane: Pane(Tabs), size: "3"),
+            (pane: Pane(TabContent), size: "100%"),
+            (pane: Pane(ProgressBar), size: "1"),
+        ],
+    ),
+    header: (
+        rows: [
+            (
+                left: [
+                    (kind: Text("["), style: (fg: "#d65d0e", modifiers: "Bold")), // Orange
+                    (kind: Property(Status(StateV2(playing_label: "Playing", paused_label: "Paused", stopped_label: "Stopped"))), style: (fg: "#d65d0e", modifiers: "Bold")), // Orange
+                    (kind: Text("]"), style: (fg: "#d65d0e", modifiers: "Bold")) // Orange
+                ],
+                center: [
+                    (kind: Property(Song(Title)), style: (modifiers: "Bold"), default: (kind: Text("No Song"), style: (modifiers: "Bold")))
+                ],
+                right: [
+                    (kind: Property(Widget(ScanStatus)), style: (fg: "#458588")), // Blue for scan status
+                    (kind: Property(Widget(Volume)), style: (fg: "#458588")) // Blue for volume
+                ]
+            ),
+            (
+                left: [
+                    (kind: Property(Status(Elapsed))),
+                    (kind: Text(" / ")),
+                    (kind: Property(Status(Duration))),
+                    (kind: Text(" (")),
+                    (kind: Property(Status(Bitrate))),
+                    (kind: Text(" kbps)"))
+                ],
+                center: [
+                    (kind: Property(Song(Artist)), style: (fg: "#d65d0e", modifiers: "Bold"), default: (kind: Text("Unknown"), style: (fg: "#d65d0e", modifiers: "Bold"))), // Orange
+                    (kind: Text(" - ")),
+                    (kind: Property(Song(Album)), default: (kind: Text("Unknown Album")))
+                ],
+                right: [
+                    (
+                        kind: Property(Widget(States(
+                            active_style: (fg: "#ebdbb2", modifiers: "Bold"),
+                            separator_style: (fg: "#ebdbb2")))
+                        ),
+                        style: (fg: "#a89984")
+                    ),
+                ]
+            ),
+        ],
+    ),
+    browser_song_format: [
+        (
+            kind: Group([
+                (kind: Property(Track)),
+                (kind: Text(" ")),
+            ])
+        ),
+        (
+            kind: Group([
+                (kind: Property(Artist)),
+                (kind: Text(" - ")),
+                (kind: Property(Title)),
+            ]),
+            default: (kind: Property(Filename))
+        ),
+    ],
+    lyrics: (
+        timestamp: false
+    )
+)
