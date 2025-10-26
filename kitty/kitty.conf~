@@ -2,7 +2,7 @@
 
 # BEGIN_KITTY_THEME
 # Gruvbox Dark
-include blue-on-black.conf
+include current-theme.conf
 # END_KITTY_THEME
 
 #: Fonts {{{
